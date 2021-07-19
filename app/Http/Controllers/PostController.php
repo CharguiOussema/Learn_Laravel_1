@@ -12,7 +12,7 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return //\Illuminate\Http\Response
      */
     public function index()
     {
@@ -111,21 +111,34 @@ class PostController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return //\Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StorePost $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->slug = Str::slug($request->input('content'),'-');
+        $post->save();
+        $request->session()->flash('status', 'post was updated!! ');
+        return redirect()->route('posts.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return //\Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        // 1ére méthode avec le find
+       /* $post = Post::findOrFail($id);
+        $post->delete();*/
+        // 2éme méthode
+        Post::destroy($id);
+        $request->session()->flash('status', 'post was deleted!! ');
+        return redirect()->route('posts.index');
     }
 }
