@@ -10,4 +10,7 @@ class Post extends Model
     //protected $table ='nom_de fichier de migration';
     use HasFactory;
     protected $fillable = ['title','content','slug','active'];
+    public function comment(){
+        return $this->hasMany('Comment');
+    }
 }
