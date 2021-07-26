@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePost;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -12,11 +13,27 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return //\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //dd(Post::all());
+
+
+
+       DB::connection()->enableQueryLog();
+
+        // mode lazy  $posts = Post::all();
+        // Eyger
+        $posts = Post::with('comments')->get();
+        foreach ($posts as $post){
+            foreach ($post->comments as $comment){
+                dump($comment);
+            }
+        }
+
+        dd(DB::getQueryLog());
+
+
         return view('posts.index',[
             'posts' => Post::all()
         ]);
