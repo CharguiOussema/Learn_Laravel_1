@@ -8,6 +8,15 @@
             <p>{{ $post->content }}</p>
             <!-- diffForHumans pour former les date  -->
             <em>{{ $post->created_at->diffForHumans() }}</em>
+            @if($post->comments_count)
+            <div>
+           <span class="badge badge-success"> {{ $post->comments_count }} comments </span>
+            </div>
+            @else
+                <div>
+                    <span class="badge badge-dark"> No comments yet </span>
+                </div>
+            @endif
             <a class="brn btn-warning" href="{{ route('posts.edit',['post' => $post->id]) }}">Edit</a>
 
             <form class="form-inline" method="POST" action="{{route('posts.destroy', ['post' => $post->id])}}">

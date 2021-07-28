@@ -22,7 +22,7 @@ class PostController extends Controller
 
        DB::connection()->enableQueryLog();
 
-        // mode lazy  $posts = Post::all();
+       /* // mode lazy  $posts = Post::all();
         // Eyger
         $posts = Post::with('comments')->get();
         foreach ($posts as $post){
@@ -31,11 +31,11 @@ class PostController extends Controller
             }
         }
 
-        dd(DB::getQueryLog());
+        dd(DB::getQueryLog());*/
 
-
+        $posts = Post::withCount('comments')->get();
         return view('posts.index',[
-            'posts' => Post::all()
+            'posts' => $posts
         ]);
     }
 
